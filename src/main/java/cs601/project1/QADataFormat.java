@@ -1,37 +1,58 @@
 package cs601.project1;
 
-public class QADataFormat 
-{
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+/**
+*
+* Contains fields for storing relevant information when reading the QA text file
+*/
+public class QADataFormat {
 	String questionType;
 	String asin;
-	String answerTime;
-	String unixTime;
 	String question;
-	String answerType;
 	String answer;
+	final String searchType = "qa";
 	
+	public String getSearchType() {
+		return searchType;
+	}
+
+	ArrayList<QADataFormat> qaDataSet = new ArrayList<QADataFormat>();
+	HashMap<String, List<String>> indexedValue = new HashMap<String, List<String>>();
 	
-	public void setQuestionType(String questionType) {
+	public HashMap<String, List<String>> getIndexedValue() {
+		return indexedValue;
+	}
+
+	public void setIndexedValue(HashMap<String, List<String>> indexedValue) {
+		this.indexedValue = indexedValue;
+	}
+
+	public ArrayList<QADataFormat> getQaDataSet() {
+		return qaDataSet;
+	}
+	public void setQaDataSet(ArrayList<QADataFormat> qaDataSet) {
+		this.qaDataSet = qaDataSet;
+	}
+	public void setQuestionType(String questionType) 
+	{
 		this.questionType = questionType;
 	}
-	public void setAsin(String asin) {
-		this.asin = asin;
+	public String getQuestionType() {
+		return questionType;
 	}
-	public void setAnswerTime(String answerTime) {
-		this.answerTime = answerTime;
+
+	public String getAsin() {
+		return asin;
 	}
-	public void setUnixTime(String unixTime) {
-		this.unixTime = unixTime;
+	public String getQuestion() {
+		return question;
 	}
-	public void setQuestion(String question) {
-		this.question = question;
-	}
-	public void setAnswerType(String answerType) {
-		this.answerType = answerType;
-	}
-	public void setAnswer(String answer) {
-		this.answer = answer;
+	public String getAnswer() {
+		return answer;
 	}
 	
-	
+
 }
