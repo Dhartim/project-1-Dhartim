@@ -1,99 +1,157 @@
 package cs601.project1;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-
 /**
- * Loading file and forming it's inverted index Each inverted index contain word
- * as key and list of line numbers in which word occur as it's value
+ * 
+ * @author dhartimadeka
+ *Inverted index data structure with add, search, sort, partialsearch, addasin and find asin functionalities
  */
-public class InvertedIndex {
 
+public class InvertedIndex 
+{
+	private HashMap<String, List<Wrapper>> invertedIndex = new HashMap<>();
+	private static HashMap<String, List<String>> asinMap = new HashMap<>();
+	//to create inverted index
 	/**
-	 * This function will load data from rdOBj or qaObj, load it and call add
-	 * element method to add each term into inverted index
-	 * 
-	 * @param br    - object to read file
-	 * @param rdObj - This is an object which stores data from review file
-	 * @param qaObj - Object which stores data from QA file
+	 * Create will take one term and object at a time. It will check term in data structure,
+	 * If not present add it to inverted index, else it will increment word frequency of that particular word.
+	 * Put data into inverted after calculating it.
+	 * @param term - pass term to add from file
+	 * @param obj - pass object either of review or qa file
 	 */
-	public void loadData(BufferedReader br, ReviewDataFormate rdObj, QADataFormat qaObj) {
-		String line = "";
-		String[] finalString;
-		ReviewDataFormate rDf;
-		QADataFormat qDf;
-		Gson gson;
-		int lineCount = 0;
-
-		try {
-			while ((line = br.readLine()) != null) {
-				try {
-					line = line.trim().replace("\\s+", " ");
-					if (rdObj != null) {
-						gson = new Gson();
-						rDf = gson.fromJson(line, ReviewDataFormate.class);
-						rdObj.getReviewDataSet().add(rDf);
-						finalString = rDf.getReviewText().replaceAll("\\p{Punct}", "").toLowerCase().split("\\s+");
-					} else {
-						gson = new Gson();
-						qDf = gson.fromJson(line, QADataFormat.class);
-						qaObj.getQaDataSet().add(qDf);
-						String temp = qDf.getQuestion() + " " + qDf.getAnswer();
-						finalString = temp.replaceAll("\\p{Punct}", "").toLowerCase().split("\\s+");
-					}
-
-					for (String term : finalString) {
-						if (!term.equals("")) {
-							addElement(term, "" + lineCount, rdObj, qaObj);
-						}
-					}
-					if (lineCount % 5000 == 0) {
-						System.out.print(".");
-					}
-					lineCount = lineCount + 1;
-				} catch (JsonSyntaxException e) {
-					System.out.print("\nSkipping line no." + (lineCount + 1));
-				}
+	public void create(HashMap<String,Integer> termToFrequency, Object obj)
+	{
+		List<Wrapper> objectsToFrequency;
+//		int entered = 0;
+//		long lStartTime = System.currentTimeMillis();
+		//wen it is empty
+		
+		for(String term:termToFrequency.keySet()) 
+		{
+			Wrapper wrap = new Wrapper(obj,termToFrequency.get(term));//passing obj and frequency
+			//wen empty
+			if(invertedIndex.containsKey(term)==false) 
+			{
+			objectsToFrequency =  new ArrayList<Wrapper>(); //list of obj
+			objectsToFrequency.add(wrap); //add obj and count
+			invertedIndex.put(term, objectsToFrequency); //put term into inverted index
+		}
+			else {
+				objectsToFrequency = invertedIndex.get(term); //list of obj
+				objectsToFrequency.add(wrap); //word is there, append wrapper list
+				invertedIndex.put(term, objectsToFrequency); //add this obj to inverted index
 			}
-		} catch (IOException io) {
-			System.out.println("Invalid file syntax line no. " + lineCount + " \nError :" + io);
 		}
-
 	}
-
+	
+	//this is for reviewsearch and partial search
 	/**
-	 * Function to add each word and it's respective line number's
-	 * 
-	 * @param term      - word to add in inverted index
-	 * @param linecount - count of number of records in inverted index.
-	 * @param rdObj     - This is an object which stores data from review file
-	 * @param qaObj     - Object which stores data from QA file.
+	 *  It will search element from review or QA file.
+	 * @param term - term to be search
+	 * @return result - List of String data with matched searches.
 	 */
-
-	public void addElement(String term, String lineCount, ReviewDataFormate rdObj, QADataFormat qaObj) {
-		HashMap<String, List<String>> indexedValue = new HashMap<String, List<String>>();
-
-		if (rdObj != null) {
-			indexedValue = rdObj.getIndexedValue();
-		} else {
-			indexedValue = qaObj.getIndexedValue();
+	public List<String> searchterm(String term)
+	{
+		List<Wrapper> objectToFrequency;
+		List<String> result = new ArrayList<>();
+		if(invertedIndex.containsKey(term))
+		{
+			objectToFrequency = invertedIndex.get(term); //fetching arraylist of each term
+			objectToFrequency = sort(objectToFrequency); //sorting it
+			for(Wrapper wrap : objectToFrequency)
+			{
+				result.add(wrap.getObj().toString()); //add element into result
+			}
 		}
-
-		if (indexedValue.get(term) != null) {
-			// if word already exist add line number in the list
-			indexedValue.get(term).add(lineCount);
-		} else {
-			// if word does not exist add the word with it's respective line number
-			List<String> a = new ArrayList<String>();
-			a.add(lineCount);
-			indexedValue.put(term, a);
+		else
+		{
+			result.add("Term not found !!");
 		}
+		return result;
+		
 	}
-
+	//partial search 
+	/**
+	 * 
+	 * @param term - term to be searched
+	 * @return partialResult - List of string data that matches partial search.
+	 */
+	public List<String> partialSearch(String term)
+	{
+		int flag =0;
+		List<String> partialResult = new ArrayList<>();
+		for(String searchPartialTerm : invertedIndex.keySet())
+		{
+			if(searchPartialTerm.contains(term))
+			{
+				partialResult.addAll(searchterm(searchPartialTerm)); //pass 
+				flag = 1;
+			}
+		}
+		if(flag == 0)
+		{
+			partialResult.add("Term not found !!!");
+		}
+		return partialResult;
+	}
+	/**
+	 *  Sort method will sort list of wrapper objects using comparator.
+	 * @param unsortedMap - pass unsorted map of type wrapper
+	 * @return - A sortedMap
+	 */
+	public static List<Wrapper> sort(List<Wrapper> unsortedMap)
+	{
+ 		Collections.sort(unsortedMap, new Comparator<Wrapper>(){
+ 			public int compare(Wrapper object1,
+ 					Wrapper object2) {
+ 				return Integer.valueOf(object1.getFrequency()).compareTo(object2.getFrequency());
+ 			}
+ 		});
+ 		return unsortedMap;
+ 	}		
+	/**
+	 * It will add asin elements into asinmap when called depending on it's type
+	 * 
+	 * @param asinId - Asin ID to be searched
+	 * @param asinText - text of matched asin from review file or qa file
+	 */
+	public void addasin(String asinId, String asinText)
+	{
+		List<String> listOfAsinText;
+		//wen empty
+		if(asinMap.containsKey(asinId) == false)
+		{
+			listOfAsinText = new ArrayList<>();
+			listOfAsinText.add(asinText);
+		}
+		else
+		{
+			listOfAsinText = asinMap.get(asinId);
+			listOfAsinText.add(asinText);
+		}
+		asinMap.put(asinId.toLowerCase(), listOfAsinText);
+	}
+	/**
+	 * FindAsin will search for an asin id into asinhashmap and display it's output.
+	 * @param asinid - pass id to be searched
+	 * @return asinResult - list of asinResult that matches with asinid of string type.
+	 */
+	public List<String> findAsin(String asinid)
+	{
+		List<String> asinResult = new ArrayList<>();
+		if(asinMap.containsKey(asinid))
+		{
+			asinResult = asinMap.get(asinid);
+		}
+		else
+		{
+			//asinResult = new ArrayList<>(); 
+			asinResult.add("Term not found !!!");
+		}
+		return asinResult;
+	}
 }

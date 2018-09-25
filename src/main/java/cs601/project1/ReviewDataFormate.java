@@ -16,7 +16,7 @@ public class ReviewDataFormate {
 	String asin;
 	String reviewText;
 	double overall;
-	final String searchType = "review";
+	//final String searchType = "review";
 	
 	ArrayList<ReviewDataFormate> reviewDataSet = new ArrayList<ReviewDataFormate>();
 	HashMap<String, List<String>> indexedValue = new HashMap<String, List<String>>();
@@ -41,9 +41,9 @@ public class ReviewDataFormate {
 		this.reviewDataSet = reviewDataSet;
 	}
 
-	public String getSearchType() {
-		return searchType;
-	}
+//	public String getSearchType() {
+//		return searchType;
+//	}
 
 	public HashMap<String, List<String>> getIndexedValue() {
 		return indexedValue;
@@ -73,5 +73,9 @@ public class ReviewDataFormate {
 	public double getOverall() {
 		return overall;
 	}
+	public String toString()
+ 	{
+ 		return "\nASIN:-"+this.asin+" \nREVIEWER ID:"+this.reviewerID+" \nREVIEW TEXT:"+this.reviewText;
+ 	}
 
 }

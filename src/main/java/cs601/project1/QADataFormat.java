@@ -13,11 +13,11 @@ public class QADataFormat {
 	String asin;
 	String question;
 	String answer;
-	final String searchType = "qa";
+	//final String searchType = "qa";
 	
-	public String getSearchType() {
-		return searchType;
-	}
+//	public String getSearchType() {
+//		return searchType;
+//	}
 
 	ArrayList<QADataFormat> qaDataSet = new ArrayList<QADataFormat>();
 	HashMap<String, List<String>> indexedValue = new HashMap<String, List<String>>();
@@ -50,9 +50,14 @@ public class QADataFormat {
 	public String getQuestion() {
 		return question;
 	}
+	
 	public String getAnswer() {
 		return answer;
 	}
 	
+	public String toString()
+ 	{
+ 		return "\nASIN:-"+this.asin+" \nQuestion:"+this.question+" \nAnswer:"+this.answer;
+ 	}
 
 }
