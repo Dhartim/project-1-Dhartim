@@ -127,6 +127,4 @@ public class UICommands
 		System.out.println("To Exit the program type 'exit' without quotes and hit enter!");
 		System.out.println("Enter Commands :");
 	}
-	
-	
 }

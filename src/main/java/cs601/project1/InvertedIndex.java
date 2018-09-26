@@ -56,7 +56,7 @@ public class InvertedIndex
 	 */
 	public List<String> searchterm(String term)
 	{
-		List<Wrapper> objectToFrequency;
+		List<Wrapper> objectToFrequency; //
 		List<String> result = new ArrayList<>();
 		if(invertedIndex.containsKey(term))
 		{
@@ -84,11 +84,13 @@ public class InvertedIndex
 	{
 		int flag =0;
 		List<String> partialResult = new ArrayList<>();
+		//get term from inverted index
 		for(String searchPartialTerm : invertedIndex.keySet())
 		{
+			// see that partial term is present inside invertedindex term.
 			if(searchPartialTerm.contains(term))
 			{
-				partialResult.addAll(searchterm(searchPartialTerm)); //pass 
+				partialResult.addAll(searchterm(searchPartialTerm)); //search that partial term in each element in inverted index
 				flag = 1;
 			}
 		}
@@ -106,7 +108,7 @@ public class InvertedIndex
 	public static List<Wrapper> sort(List<Wrapper> unsortedMap)
 	{
  		Collections.sort(unsortedMap, new Comparator<Wrapper>(){
- 			public int compare(Wrapper object1,
+ 			public int compare(Wrapper object1, //check value of word's frequency with another word's frequency
  					Wrapper object2) {
  				return Integer.valueOf(object1.getFrequency()).compareTo(object2.getFrequency());
  			}
