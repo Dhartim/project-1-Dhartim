@@ -50,7 +50,7 @@ public class BuildingDataStructure
 						 System.out.println("Skipping...");
 					}
 					
-					text = qaObj.getAnswer() + qaObj.getQuestion(); //passing question + answer
+					text = qaObj.getQuestion() + qaObj.getAnswer(); //passing question + answer
 					invertedIndex.addasin(qaObj.getAsin().toLowerCase(), qaObj.toString()); //pass asin id and quest + ans
 					//asin.addasin(qaObj.getAsin(), qaObj.toString());
 				}

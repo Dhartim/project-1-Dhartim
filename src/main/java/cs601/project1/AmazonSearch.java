@@ -14,11 +14,14 @@ public class AmazonSearch
 	//public static AddAsin asin = new AddAsin(); //bcoz we r passing same instance to both review nd qa file
 	public static void main(String[] args) 
 	{
-		BuildingDataStructure bds = new BuildingDataStructure();
+		//creating objects
+		BuildingDataStructure bds = new BuildingDataStructure(); 
 		ReviewDataFormate rdobj = new ReviewDataFormate();
 		QADataFormat qaObj = new QADataFormat();
+		//using 2 occurence of inverted index
 		InvertedIndex invertedIndexforReview;
 		InvertedIndex invertedIndexforQA;	
+		//checking arguments of command lines
 		if(UICommands.checkarguments(args))
 		{
 		// TODO Auto-generated method stub
