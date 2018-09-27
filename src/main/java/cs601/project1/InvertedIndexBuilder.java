@@ -15,6 +15,7 @@ public class InvertedIndexBuilder
 	/**
 	 * 
 	 * @param pathOfFile - passing file path
+	 * @param fileType - passing type of file
 	 * @param obj - passing rdobj or qaobj
 	 * @return inverteidindex = it will return inverted index back
 	 */

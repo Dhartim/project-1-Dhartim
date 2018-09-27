@@ -7,7 +7,7 @@ import java.nio.file.Paths;
  * @author dhartimadeka
  *Main method . it will call all other methods to build invertedindex
  */
-enum typeOfFile{Review, QA };
+enum typeOfFile{Review, QA }; //to check type of file
 
 public class AmazonSearch 
 {
