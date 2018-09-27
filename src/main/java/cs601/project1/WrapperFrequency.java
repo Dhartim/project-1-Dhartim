@@ -1,5 +1,4 @@
 package cs601.project1;
-
 /**
  * 
  * @author dhartimadeka
@@ -7,12 +6,12 @@ package cs601.project1;
  *obj - it's an object of type review or qa file type
  *frequency - frequency of word in that json element.
  */
-public class Wrapper 
+public class WrapperFrequency 
 {
 	private Object obj;
 	private int frequency;
-	
-	public Wrapper(Object obj, int frequency) 
+
+	public WrapperFrequency(Object obj, int frequency) 
 	{
 		this.obj = obj;
 		this.frequency = frequency;

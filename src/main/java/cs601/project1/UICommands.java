@@ -1,5 +1,6 @@
 package cs601.project1;
 
+import java.util.List;
 import java.util.Scanner;
 /**
  * Class to print ui menu and accept user data and return result.
@@ -8,7 +9,6 @@ import java.util.Scanner;
  */
 public class UICommands 
 {
-	//String reviewFileName = "", qaFileName = "", cmd = "", methodname = "", inputword = "" ;
 	/**
 	 * 
 	 * @param args - It takes arguments from terminal and checks it validation.
@@ -17,7 +17,7 @@ public class UICommands
 	public static boolean checkarguments(String[] args)
 	{	
 		boolean flag = false;
-		
+
 		final String exiting = "\nTerminating Program!! Please Try again!!";
 		final String fileSyntax = "Please specify proper json file type with it's path properly like\n-reviews <review_file_path> -qa <qa_file_path>";
 		if(args.length == 4)
@@ -73,33 +73,33 @@ public class UICommands
 			}
 			if (cmd.trim().equals("exit")) 
 			{
-					System.out.println(thankYou);
-					System.exit(0);
+				System.out.println(thankYou);
+				System.exit(0);
 			}
 			String methodname = cmd.trim().split(" ")[0];
 			String inputword = cmd.trim().split(" ")[1].replaceAll("\\p{Punct}", "");
-			
+
 			switch (methodname) 
 			{
 			case "find":
 				// find by asin
-				BuildingDataStructure.displayOutput(invertIndexReview.findAsin(inputword));
+				displayOutput(invertIndexReview.findAsin(inputword));
 				continue;
 			case "reviewsearch":
 				//reviewsearch
-				BuildingDataStructure.displayOutput(invertIndexReview.searchterm(inputword));
+				displayOutput(invertIndexReview.searchterm(inputword));
 				continue;
 			case "qasearch":
 				// search word == term
-				BuildingDataStructure.displayOutput(invertIndexQA.searchterm(inputword));
+				displayOutput(invertIndexQA.searchterm(inputword));
 				continue;
 			case "reviewpartialsearch":
 				// search like %term%
-				BuildingDataStructure.displayOutput(invertIndexReview.partialSearch(inputword));
+				displayOutput(invertIndexReview.partialSearch(inputword));
 				continue;
 			case "qapartialsearch":
 				// search like %term%
-				BuildingDataStructure.displayOutput(invertIndexQA.partialSearch(inputword));
+				displayOutput(invertIndexQA.partialSearch(inputword));
 				continue;
 			case "exit":
 				System.out.println(thankYou);
@@ -109,7 +109,7 @@ public class UICommands
 				continue;
 			}
 		}while(cmd != "exit");
-		
+
 		sc.close();
 	}
 	/**
@@ -126,5 +126,24 @@ public class UICommands
 		System.out.println("********************************************************************************");
 		System.out.println("To Exit the program type 'exit' without quotes and hit enter!");
 		System.out.println("Enter Commands :");
+	}
+
+	//display op
+	public static void displayOutput(List<String> output)
+	{
+		int count = 1;
+		if(output.size() == 1)
+		{
+			System.out.println("\n Record:- 1\n" + output);
+		}
+		else
+		{
+			for(String result : output)
+			{
+
+				System.out.println("\n Record:- " + count + "\n " + result );
+				count ++;
+			}
+		}
 	}
 }
